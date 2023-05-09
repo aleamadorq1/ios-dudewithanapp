@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @State private var quotes: [Quote] = []
@@ -10,15 +11,17 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             // Background image
+            let bgColor = Color("background1", bundle: nil)
             Image("background1")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-            
+                .overlay(Color.clear.opacity(bgColor.isLight() ? 0.7 : 0.3))
+
             // Pantone-style Quote card
             VStack {
                 if let quote = currentQuote {
-                    PantoneQuoteView(quote: quote)
+                    PantoneQuoteView(quote: quote, backgroundColor: bgColor)
                 }
             }
             .onAppear {
@@ -77,7 +80,8 @@ struct ContentView: View {
 }
 struct PantoneQuoteView: View {
     let quote: Quote
-    
+    let backgroundColor: Color
+
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
@@ -85,26 +89,26 @@ struct PantoneQuoteView: View {
                     .font(.custom("HelveticaNeue-Bold", size: dynamicFontSize(quote: quote)))
                     .padding(.horizontal, 30)
                     .padding(.top, 30)
-                    .foregroundColor(.black)
+                    .foregroundColor(backgroundColor.isLight() ? .black : .white)
                 
-                Text("-Author 1886")
+                Text("-Author, 1887")
                     .font(.custom("HelveticaNeue-Bold", size: 20))
                     .padding(.top, 20)
                     .padding(.horizontal, 30)
-                    .foregroundColor(.black)
+                    .foregroundColor(backgroundColor.isLight() ? .black : .white)
             }
             .frame(width: 300, height: 300)
-            .background(Color.white.opacity(0.5))
-            .border(Color.black, width: 2)
-            
+            .background(Color.white.opacity(0.3))
+            .border(backgroundColor.isLight() ? .black : .white, width: 2)
+
             Text("Dios te llama")
                 .font(.custom("HelveticaNeue-Bold", size: 30))
                 .padding(.top, 20)
                 .padding(.horizontal, 30)
-                .foregroundColor(.black)
+                .foregroundColor(backgroundColor.isLight() ? .black : .white)
         }
     }
-    
+
     func dynamicFontSize(quote: Quote) -> CGFloat {
         let length = quote.quoteText.count
         if length < 50 {
@@ -119,103 +123,27 @@ struct PantoneQuoteView: View {
 
 
 
-struct ArtisticQuoteView: View {
-    let words: [String]
-    let maxWidth: CGFloat = 250.0
-    let minFontSize: CGFloat = 14
-    let maxFontSize: CGFloat = 28
-    
-    init(quote: Quote) {
-        self.words = quote.quoteText.components(separatedBy: " ")
-    }
-    
-    var body: some View {
-        VStack {
-            justifiedText()
-                .frame(maxWidth: maxWidth)
-        }
-        .padding()
-        .background(Color.white)
-        .border(Color.black, width: 2)
-    }
-    
-    func breakLongWord(_ word: String, maxWidth: CGFloat) -> [String] {
-        var brokenWords: [String] = []
-        var currentWord = ""
-        for char in word {
-            let testWord = currentWord + String(char)
-            let textSize = testWord.size(usingFont: UIFont.systemFont(ofSize: minFontSize))
-            
-            if textSize.width > maxWidth {
-                brokenWords.append(currentWord)
-                currentWord = String(char)
-            } else {
-                currentWord = testWord
-            }
-        }
-        brokenWords.append(currentWord)
-        return brokenWords
-    }
-
-    func justifiedText() -> some View {
-        var lines: [Text] = []
-        var currentLine: Text? = nil
-        var lineWidthUsed: CGFloat = 0
-        
-        for word in words {
-            let fontSize = randomFontSize()
-            let font = Font.system(size: fontSize)
-            let wordSize = word.size(usingFont: UIFont.systemFont(ofSize: fontSize))
-            
-            if lineWidthUsed + wordSize.width > maxWidth {
-                if let line = currentLine {
-                    lines.append(line)
-                }
-                currentLine = Text(word).font(font)
-                lineWidthUsed = wordSize.width
-            }
-            else {
-                let spaceSize = " ".size(usingFont: UIFont.systemFont(ofSize: fontSize))
-                lineWidthUsed += wordSize.width + spaceSize.width
-                let newText = Text(word).font(font)
-                if let line = currentLine {
-                    currentLine = line + Text(" ") + newText
-                } else {
-                    currentLine = newText
-                }
-            }
-            
-            if let lastWord = words.last, word == lastWord, let line = currentLine {
-                lines.append(line)
-            }
-        }
-        
-        return VStack(alignment: .leading, spacing: 0) {
-            ForEach(lines.indices, id: \.self) { index in
-                lines[index].padding(.bottom, 2)
-            }
-        }
-    }
-
-    func randomFontSize() -> CGFloat {
-        return CGFloat.random(in: minFontSize..<maxFontSize)
-    }
-}
-
-enum ImageFilter: CaseIterable {
-    case none
-    case sepia
-    case grayscale
-    case blur
-    
-    static func randomFilter() -> ImageFilter {
-        return ImageFilter.allCases.randomElement() ?? .none
-    }
-}
 extension String {
     func size(usingFont font: UIFont) -> CGSize {
         let attributedString = NSAttributedString(string: self, attributes: [.font: font])
         return attributedString.size()
     }
 }
+extension Color {
+    func uiColor() -> UIColor {
+        let components = self.cgColor?.components ?? [0, 0, 0, 0]
+        return UIColor(red: components[0], green: components[1], blue: components[2], alpha: components[3])
+    }
+    
+    func isLight() -> Bool {
+        let uiColor = self.uiColor()
+        let colorComponents = uiColor.cgColor.components
+        let red = colorComponents?[0] ?? 0
+        let green = colorComponents?[1] ?? 0
+        let blue = colorComponents?[2] ?? 0
+        let yiq = (red * 299 + green * 587 + blue * 114) / 1000
+        return yiq >= 0.5
+    }
+}
+
 
