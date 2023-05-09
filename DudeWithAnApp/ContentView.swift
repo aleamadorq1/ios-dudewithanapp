@@ -4,42 +4,43 @@ struct ContentView: View {
     @State private var quotes: [Quote] = []
     @State private var currentQuote: Quote?
     @State private var currentIndex: Int = 0
-    @State private var backgroundFilter: ImageFilter = .none
     
     private let apiService = APIService()
     
     var body: some View {
-            ZStack {
-                // Background image
-                BackgroundImageView(imageName: "background1", filter: backgroundFilter)
-                        .edgesIgnoringSafeArea(.all)
-                
-                // Pantone-style Quote card
-                VStack {
-                    if let quote = currentQuote {
-                        PantoneQuoteView(quote: quote)
-                    }
+        ZStack {
+            // Background image
+            Image("background1")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+            
+            // Pantone-style Quote card
+            VStack {
+                if let quote = currentQuote {
+                    PantoneQuoteView(quote: quote)
                 }
-                .onAppear {
-                    loadQuotes()
-                }
-                .gesture(
-                    DragGesture()
-                        .onEnded { value in
-                            let horizontalTranslation = value.translation.width
-                            let threshold: CGFloat = 100
-                            
-                            if horizontalTranslation > threshold {
-                                // Swipe right
-                                previousQuote()
-                            } else if horizontalTranslation < -threshold {
-                                // Swipe left
-                                nextQuote()
-                            }
-                        }
-                )
             }
+            .onAppear {
+                loadQuotes()
+            }
+            .gesture(
+                DragGesture()
+                    .onEnded { value in
+                        let horizontalTranslation = value.translation.width
+                        let threshold: CGFloat = 100
+                        
+                        if horizontalTranslation > threshold {
+                            // Swipe right
+                            previousQuote()
+                        } else if horizontalTranslation < -threshold {
+                            // Swipe left
+                            nextQuote()
+                        }
+                    }
+            )
         }
+    }
     
     private func loadQuotes() {
         apiService.fetchAllQuotes { result in
@@ -61,39 +62,36 @@ struct ContentView: View {
             withAnimation(.easeInOut(duration: 0.5)) {
                 currentIndex += 1
                 currentQuote = quotes[currentIndex]
-                backgroundFilter = ImageFilter.randomFilter()
             }
         }
     }
-
+    
     private func previousQuote() {
         if currentIndex - 1 >= 0 {
             withAnimation(.easeInOut(duration: 0.5)) {
                 currentIndex -= 1
                 currentQuote = quotes[currentIndex]
-                backgroundFilter = ImageFilter.randomFilter()
             }
         }
     }
 }
 struct PantoneQuoteView: View {
     let quote: Quote
+    
     var body: some View {
-        VStack {
-            VStack {
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
                 Text(quote.quoteText)
-                    .font(.custom("HelveticaNeue-Bold", size: 20))
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.custom("HelveticaNeue-Bold", size: dynamicFontSize(quote: quote)))
                     .padding(.horizontal, 30)
                     .padding(.top, 30)
                     .foregroundColor(.black)
                 
                 Text("-Author 1886")
-                    .font(.custom("HelveticaNeue-Bold", size: 16))
+                    .font(.custom("HelveticaNeue-Bold", size: 20))
                     .padding(.top, 20)
                     .padding(.horizontal, 30)
                     .foregroundColor(.black)
-                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(width: 300, height: 300)
             .background(Color.white.opacity(0.5))
@@ -104,12 +102,20 @@ struct PantoneQuoteView: View {
                 .padding(.top, 20)
                 .padding(.horizontal, 30)
                 .foregroundColor(.black)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .transition(.slide) // Add this line for the sliding effect
+    }
+    
+    func dynamicFontSize(quote: Quote) -> CGFloat {
+        let length = quote.quoteText.count
+        if length < 50 {
+            return 30
+        } else if length < 100 {
+            return 24
+        } else {
+            return 20
+        }
     }
 }
-
 
 
 

@@ -7,18 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A9CE917A2A00C2FE008F5B61 /* PlayfairDisplay-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9CE91792A00C2FE008F5B61 /* PlayfairDisplay-VariableFont_wght.ttf */; };
 		A9E3CC4F29F8F90700D01245 /* DudeWithAnAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E3CC4E29F8F90700D01245 /* DudeWithAnAppApp.swift */; };
 		A9E3CC5129F8F90700D01245 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E3CC5029F8F90700D01245 /* ContentView.swift */; };
 		A9E3CC5329F8F90900D01245 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9E3CC5229F8F90900D01245 /* Assets.xcassets */; };
 		A9E3CC5629F8F90900D01245 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9E3CC5529F8F90900D01245 /* Preview Assets.xcassets */; };
 		A9E3CC5D29F8F94500D01245 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E3CC5C29F8F94500D01245 /* Quote.swift */; };
 		A9E3CC5F29F8F98100D01245 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E3CC5E29F8F98000D01245 /* APIService.swift */; };
-		A9E3CC6129F8FC3E00D01245 /* BackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E3CC6029F8FC3E00D01245 /* BackgroundImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A9CE91792A00C2FE008F5B61 /* PlayfairDisplay-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-VariableFont_wght.ttf"; path = "../../../../Downloads/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		A9E3CC4B29F8F90700D01245 /* DudeWithAnApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DudeWithAnApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E3CC4E29F8F90700D01245 /* DudeWithAnAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DudeWithAnAppApp.swift; sourceTree = "<group>"; };
 		A9E3CC5029F8F90700D01245 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -26,7 +23,6 @@
 		A9E3CC5529F8F90900D01245 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A9E3CC5C29F8F94500D01245 /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		A9E3CC5E29F8F98000D01245 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		A9E3CC6029F8FC3E00D01245 /* BackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +39,6 @@
 		A9E3CC4229F8F90700D01245 = {
 			isa = PBXGroup;
 			children = (
-				A9CE91792A00C2FE008F5B61 /* PlayfairDisplay-VariableFont_wght.ttf */,
 				A9E3CC4D29F8F90700D01245 /* DudeWithAnApp */,
 				A9E3CC4C29F8F90700D01245 /* Products */,
 			);
@@ -60,7 +55,6 @@
 		A9E3CC4D29F8F90700D01245 /* DudeWithAnApp */ = {
 			isa = PBXGroup;
 			children = (
-				A9E3CC6029F8FC3E00D01245 /* BackgroundImage.swift */,
 				A9E3CC5E29F8F98000D01245 /* APIService.swift */,
 				A9E3CC5C29F8F94500D01245 /* Quote.swift */,
 				A9E3CC4E29F8F90700D01245 /* DudeWithAnAppApp.swift */,
@@ -138,7 +132,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9E3CC5629F8F90900D01245 /* Preview Assets.xcassets in Resources */,
-				A9CE917A2A00C2FE008F5B61 /* PlayfairDisplay-VariableFont_wght.ttf in Resources */,
 				A9E3CC5329F8F90900D01245 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,7 +146,6 @@
 				A9E3CC5129F8F90700D01245 /* ContentView.swift in Sources */,
 				A9E3CC5D29F8F94500D01245 /* Quote.swift in Sources */,
 				A9E3CC5F29F8F98100D01245 /* APIService.swift in Sources */,
-				A9E3CC6129F8FC3E00D01245 /* BackgroundImage.swift in Sources */,
 				A9E3CC4F29F8F90700D01245 /* DudeWithAnAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
