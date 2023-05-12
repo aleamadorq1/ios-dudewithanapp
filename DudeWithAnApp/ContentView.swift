@@ -11,8 +11,8 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             // Background image
-            let bgColor = Color("background1", bundle: nil)
-            Image("background1")
+            let bgColor = Color("background3", bundle: nil)
+            Image("background3")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -98,10 +98,10 @@ struct PantoneQuoteView: View {
                     .foregroundColor(backgroundColor.isLight() ? .black : .white)
             }
             .frame(width: 300, height: 300)
-            .background(Color.white.opacity(0.3))
+            .background(backgroundColor.isLight() ? .white.opacity(0.2) : .black.opacity(0.2))
             .border(backgroundColor.isLight() ? .black : .white, width: 2)
 
-            Text("Dios te llama")
+            Text("Daily Quotes")
                 .font(.custom("HelveticaNeue-Bold", size: 30))
                 .padding(.top, 20)
                 .padding(.horizontal, 30)
