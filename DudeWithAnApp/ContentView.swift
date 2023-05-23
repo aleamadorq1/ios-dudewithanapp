@@ -84,29 +84,36 @@ struct PantoneQuoteView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading) {
-                Text(quote.quoteText)
-                    .font(.custom("HelveticaNeue-Bold", size: dynamicFontSize(quote: quote)))
+            Text(quote.quoteText)
+                .font(.custom("HelveticaNeue-Bold", size: dynamicFontSize(quote: quote)))
+                .padding(.horizontal, 30)
+                .padding(.top, 30)
+                .foregroundColor(backgroundColor.isLight() ? .black : .white)
+            
+            if let url = URL(string: quote.url) {
+                Link(quote.secondaryText, destination: url)
+                    .font(.custom("HelveticaNeue-Bold", size: dynamicFontSizeForSecondaryText(quote: quote)))
+                    .padding(.top, 20)
                     .padding(.horizontal, 30)
-                    .padding(.top, 30)
                     .foregroundColor(backgroundColor.isLight() ? .black : .white)
-                
-                Text("-Author, 1887")
-                    .font(.custom("HelveticaNeue-Bold", size: 20))
+            } else {
+                Text(quote.secondaryText)
+                    .font(.custom("HelveticaNeue-Bold", size: dynamicFontSizeForSecondaryText(quote: quote)))
                     .padding(.top, 20)
                     .padding(.horizontal, 30)
                     .foregroundColor(backgroundColor.isLight() ? .black : .white)
             }
-            .frame(width: 300, height: 300)
-            .background(backgroundColor.isLight() ? .white.opacity(0.2) : .black.opacity(0.2))
-            .border(backgroundColor.isLight() ? .black : .white, width: 2)
-
-            Text("Daily Quotes")
-                .font(.custom("HelveticaNeue-Bold", size: 30))
-                .padding(.top, 20)
-                .padding(.horizontal, 30)
-                .foregroundColor(backgroundColor.isLight() ? .black : .white)
         }
+        .frame(width: 300, height: 300)
+        .background(backgroundColor.isLight() ? .white.opacity(0.2) : .black.opacity(0.2))
+        .border(backgroundColor.isLight() ? .black : .white, width: 2)
+        
+        Text("Daily Quotes")
+            .font(.custom("HelveticaNeue-Bold", size: 30))
+            .padding(.top, 20)
+            .padding(.horizontal, 0)
+            .padding(.leading, 10)
+            .foregroundColor(backgroundColor.isLight() ? .black : .white)
     }
 
     func dynamicFontSize(quote: Quote) -> CGFloat {
@@ -119,6 +126,15 @@ struct PantoneQuoteView: View {
             return 20
         }
     }
+    func dynamicFontSizeForSecondaryText(quote: Quote) -> CGFloat {
+        let length = quote.secondaryText.count
+        if length < 20 {
+            return 20
+        } else {
+            return 16
+        }
+    }
+
 }
 
 

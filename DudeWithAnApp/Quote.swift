@@ -7,8 +7,10 @@
 
 import Foundation
 
-struct Quote: Codable, Identifiable {
+struct Quote: Codable, Identifiable, Equatable {
     let id: Int
     let quoteText: String
+    let secondaryText: String
+    let url: String
     let creationDate: String
 }
