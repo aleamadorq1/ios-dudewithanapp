@@ -7,10 +7,18 @@
 
 import Foundation
 
-struct Quote: Codable, Identifiable, Equatable {
-    let id: Int
-    let quoteText: String
-    let secondaryText: String
-    let url: String
-    let creationDate: String
+public struct Quote: Codable, Identifiable, Equatable {
+    public let id: Int
+    public let quoteText: String
+    public let secondaryText: String
+    public let url: String
+    public let creationDate: String
+    
+    public init(id: Int, quoteText: String, secondaryText: String, url: String, creationDate: String) {
+            self.id = id
+            self.quoteText = quoteText
+            self.secondaryText = secondaryText
+            self.url = url
+            self.creationDate = creationDate
+        }
 }

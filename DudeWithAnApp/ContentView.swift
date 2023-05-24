@@ -106,7 +106,7 @@ struct PantoneQuoteView: View {
         }
         .frame(width: 300, height: 300)
         .background(backgroundColor.isLight() ? .white.opacity(0.2) : .black.opacity(0.2))
-        .border(backgroundColor.isLight() ? .black : .white, width: 2)
+        .border(backgroundColor.isLight() ? .black : .white, width: 6)
         
         Text("Daily Quotes")
             .font(.custom("HelveticaNeue-Bold", size: 30))

@@ -7,9 +7,10 @@
 
 import Foundation
 
-class APIService {
+public class APIService {
     let allQuotesURL = "https://dudewithanapp.site/api/quote"
     let latestQuoteURL = "https://dudewithanapp.site/api/quote/latest"
+    public init() {}
     
     func fetchAllQuotes(completion: @escaping (Result<[Quote], Error>) -> Void) {
         guard let url = URL(string: allQuotesURL) else { return }
@@ -28,7 +29,7 @@ class APIService {
         }.resume()
     }
     
-    func fetchLatestQuote(completion: @escaping (Result<Quote, Error>) -> Void) {
+    public func fetchLatestQuote(completion: @escaping (Result<Quote, Error>) -> Void) {
         guard let url = URL(string: latestQuoteURL) else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
