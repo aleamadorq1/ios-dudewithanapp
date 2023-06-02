@@ -91,7 +91,7 @@ struct LatestQuoteWidgetEntryView : View {
                 }
                 .frame(width: geometry.size.width * 0.85, height: geometry.size.height * 0.85)
                 .background(Color.white)
-                .border(Color.black, width: 1)
+                .border(Color.black, width: 2)
                 .position(x: geometry.size.width * 0.5, y: geometry.size.height * 0.5)
             }
         }
