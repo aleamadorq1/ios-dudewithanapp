@@ -102,9 +102,9 @@ struct LatestQuoteWidgetEntryView : View {
         if length < 50 {
             return 12
         } else if length < 100 {
-            return 9
+            return 10
         } else {
-            return 7
+            return 8
         }
     }
     func dynamicFontSizeForSecondaryText(quote: Quote) -> CGFloat {

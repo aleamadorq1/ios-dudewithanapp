@@ -5,12 +5,15 @@ struct ContentView: View {
     @State private var quotes: [Quote] = []
     @State private var currentQuote: Quote?
     @State private var currentIndex: Int = 0
-    
+    @State private var animationActive = false
+    @State private var iconsVisible: Bool = false
+    @State private var likedQuotes: [Int] = UserDefaults.standard.array(forKey: "likedQuotes") as? [Int] ?? []
+    @State private var iconJustTapped: Bool = false
+
     private let apiService = APIService()
     
     var body: some View {
         ZStack {
-            // Background image
             let bgColor = Color("background3", bundle: nil)
             Image("background3")
                 .resizable()
@@ -18,10 +21,29 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
                 .overlay(Color.clear.opacity(bgColor.isLight() ? 0.7 : 0.3))
 
-            // Pantone-style Quote card
             VStack {
+                Spacer()
                 if let quote = currentQuote {
                     PantoneQuoteView(quote: quote, backgroundColor: bgColor)
+                }
+                Spacer()
+                if iconsVisible {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "book.fill").foregroundColor(bgColor.isLight() ? .black : .white)
+                        Spacer()
+                        Image(systemName: isQuoteLiked(currentQuote) ? "heart.fill" : "heart")
+                            .foregroundColor(isQuoteLiked(currentQuote) ? Color.red : (bgColor.isLight() ? Color.black : Color.white))
+                            .onTapGesture {
+                                toggleLike()
+                            }
+                            .animation(.easeInOut)
+                        Spacer()
+                        Image(systemName: "moon.fill").foregroundColor(bgColor.isLight() ? .black : .white)
+                        Spacer()
+                    }
+                    .padding(.bottom, 10)
+                    .transition(.scale)
                 }
             }
             .onAppear {
@@ -34,11 +56,34 @@ struct ContentView: View {
                         let threshold: CGFloat = 100
                         
                         if horizontalTranslation > threshold {
-                            // Swipe right
                             previousQuote()
                         } else if horizontalTranslation < -threshold {
-                            // Swipe left
                             nextQuote()
+                        }
+                    }
+            )
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { _ in
+                        withAnimation {
+                            if iconsVisible == false {
+                                iconsVisible = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                    withAnimation {
+                                        if !iconJustTapped {
+                                            iconsVisible = false
+                                        }
+                                    }
+                                }
+                            } else {
+                                iconJustTapped = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    withAnimation {
+                                        iconsVisible = false
+                                        iconJustTapped = false
+                                    }
+                                }
+                            }
                         }
                     }
             )
@@ -51,8 +96,8 @@ struct ContentView: View {
                 switch result {
                 case .success(let quotes):
                     self.quotes = quotes
-                    self.currentIndex = quotes.count - 1
-                    self.currentQuote = quotes.last
+                    self.currentIndex = 0
+                    self.currentQuote = quotes.first
                 case .failure(let error):
                     print("Error fetching quotes: \(error)")
                 }
@@ -77,7 +122,25 @@ struct ContentView: View {
             }
         }
     }
+    
+    private func isQuoteLiked(_ quote: Quote?) -> Bool {
+        guard let quote = quote else { return false }
+        return likedQuotes.contains(quote.id)
+    }
+
+    private func toggleLike() {
+        guard let quote = currentQuote else { return }
+        if isQuoteLiked(quote) {
+            if let index = likedQuotes.firstIndex(of: quote.id) {
+                likedQuotes.remove(at: index)
+            }
+        } else {
+            likedQuotes.append(quote.id)
+        }
+        UserDefaults.standard.set(likedQuotes, forKey: "likedQuotes")
+    }
 }
+
 struct PantoneQuoteView: View {
     let quote: Quote
     let backgroundColor: Color
