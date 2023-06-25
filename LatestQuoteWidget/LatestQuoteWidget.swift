@@ -10,7 +10,7 @@ struct Provider: TimelineProvider {
     let apiService = APIService()
 
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(),  quote: Quote(id: 0, quoteText: "Placeholder", secondaryText: "", url: "", creationDate: ""))
+        SimpleEntry(date: Date(),  quote: Quote(id: 0, quoteText: "Placeholder", secondaryText: "", url: "", creationDate: "", isActive: 0, isCSV: 0))
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
@@ -22,7 +22,7 @@ struct Provider: TimelineProvider {
                     completion(entry)
                 case .failure(let error):
                     print("Error fetching latest quote: \(error)")
-                    let entry = SimpleEntry(date: Date(), quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: ""))
+                    let entry = SimpleEntry(date: Date(), quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: "", isActive: 0, isCSV: 0))
                     completion(entry)
                 }
             }
@@ -39,7 +39,7 @@ struct Provider: TimelineProvider {
                     completion(timeline)
                 case .failure(let error):
                     print("Error fetching latest quote: \(error)")
-                    let entry = SimpleEntry(date: Date(), quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: ""))
+                    let entry = SimpleEntry(date: Date(), quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: "", isActive: 0, isCSV: 0))
                     let timeline = Timeline(entries: [entry], policy: .atEnd)
                     completion(timeline)
                 }
@@ -61,7 +61,7 @@ struct LatestQuoteWidgetEntryView : View {
     var body: some View {
         if family == .accessoryRectangular {
             VStack(alignment: .leading, spacing: 0) {
-                    Text(entry.quote.quoteText)
+                Text(entry.quote.quoteText)
                         .font(.custom("HelveticaNeue", size: dynamicFontSize(quote: entry.quote)))
                         .foregroundColor(Color.black)
                         .padding(2)
@@ -137,7 +137,7 @@ struct LatestQuoteWidget: Widget {
 
 struct LatestQuoteWidget_Previews: PreviewProvider {
     static var previews: some View {
-        LatestQuoteWidgetEntryView(entry: SimpleEntry(date: Date(),  quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: "")))
+        LatestQuoteWidgetEntryView(entry: SimpleEntry(date: Date(),  quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: "", isActive: 0, isCSV: 0)))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

@@ -9,84 +9,104 @@ struct ContentView: View {
     @State private var iconsVisible: Bool = false
     @State private var likedQuotes: [Int] = UserDefaults.standard.array(forKey: "likedQuotes") as? [Int] ?? []
     @State private var iconJustTapped: Bool = false
+    @State private var isMyLikesViewActive: Bool = false
 
     private let apiService = APIService()
     
     var body: some View {
-        ZStack {
-            let bgColor = Color("background3", bundle: nil)
-            Image("background3")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
-                .overlay(Color.clear.opacity(bgColor.isLight() ? 0.7 : 0.3))
-
-            VStack {
-                Spacer()
-                if let quote = currentQuote {
-                    PantoneQuoteView(quote: quote, backgroundColor: bgColor)
-                }
-                Spacer()
-                if iconsVisible {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "book.fill").foregroundColor(bgColor.isLight() ? .black : .white)
-                        Spacer()
-                        Image(systemName: isQuoteLiked(currentQuote) ? "heart.fill" : "heart")
-                            .foregroundColor(isQuoteLiked(currentQuote) ? Color.red : (bgColor.isLight() ? Color.black : Color.white))
-                            .onTapGesture {
-                                toggleLike()
-                            }
-                            .animation(.easeInOut)
-                        Spacer()
-                        Image(systemName: "moon.fill").foregroundColor(bgColor.isLight() ? .black : .white)
-                        Spacer()
+        NavigationView {
+            ZStack {
+                let bgColor = Color("background3", bundle: nil)
+                Image("background3")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+                    .overlay(Color.clear.opacity(bgColor.isLight() ? 0.7 : 0.3))
+                
+                VStack {
+                    Spacer()
+                    NavigationLink(destination: LikedQuotesView(), isActive: $isMyLikesViewActive) {
+                                            EmptyView()
+                                        }
+                    if let quote = currentQuote {
+                        PantoneQuoteView(quote: quote, backgroundColor: bgColor)
                     }
-                    .padding(.bottom, 10)
-                    .transition(.scale)
-                }
-            }
-            .onAppear {
-                loadQuotes()
-            }
-            .gesture(
-                DragGesture()
-                    .onEnded { value in
-                        let horizontalTranslation = value.translation.width
-                        let threshold: CGFloat = 100
-                        
-                        if horizontalTranslation > threshold {
-                            previousQuote()
-                        } else if horizontalTranslation < -threshold {
-                            nextQuote()
-                        }
-                    }
-            )
-            .simultaneousGesture(
-                TapGesture()
-                    .onEnded { _ in
-                        withAnimation {
-                            if iconsVisible == false {
-                                iconsVisible = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                                    withAnimation {
-                                        if !iconJustTapped {
+                    Spacer()
+                    if iconsVisible {
+                        HStack {
+                            Spacer()
+                            Image(systemName: "book.fill")
+                                .foregroundColor(bgColor.isLight() ? .black : .white)
+                                .onTapGesture {
+                                    isMyLikesViewActive.toggle()
+                                }
+                            Spacer()
+                            Image(systemName: isQuoteLiked(currentQuote) ? "heart.fill" : "heart")
+                                .foregroundColor(isQuoteLiked(currentQuote) ? Color.red : (bgColor.isLight() ? Color.black : Color.white))
+                                .onTapGesture {
+                                    withAnimation(.easeInOut) {
+                                        toggleLike()
+                                    }
+                                    iconJustTapped = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        withAnimation {
                                             iconsVisible = false
+                                            iconJustTapped = false
                                         }
                                     }
                                 }
-                            } else {
-                                iconJustTapped = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    withAnimation {
-                                        iconsVisible = false
-                                        iconJustTapped = false
+                            Spacer()
+                            Image(systemName: "moon.fill").foregroundColor(bgColor.isLight() ? .black : .white)
+                            Spacer()
+                        }
+                        .padding(.bottom, 10)
+                        .transition(.scale)
+                    }
+                }
+                .onAppear {
+                    loadQuotes()
+                }
+                .gesture(
+                    DragGesture()
+                        .onEnded { value in
+                            let horizontalTranslation = value.translation.width
+                            let threshold: CGFloat = 100
+                            
+                            if horizontalTranslation > threshold {
+                                previousQuote()
+                            } else if horizontalTranslation < -threshold {
+                                nextQuote()
+                            }
+                        }
+                )
+                .simultaneousGesture(
+                    TapGesture()
+                        .onEnded { _ in
+                            withAnimation {
+                                if iconsVisible == false {
+                                    iconsVisible = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                                        withAnimation {
+                                            if !iconJustTapped && !isMyLikesViewActive {
+                                                iconsVisible = false
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    iconJustTapped = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                        withAnimation {
+                                            if !isMyLikesViewActive {
+                                                iconsVisible = false
+                                                iconJustTapped = false
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-            )
+                )
+            }
         }
     }
     
