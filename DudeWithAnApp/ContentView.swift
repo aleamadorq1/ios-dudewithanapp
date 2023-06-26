@@ -10,24 +10,32 @@ struct ContentView: View {
     @State private var likedQuotes: [Int] = UserDefaults.standard.array(forKey: "likedQuotes") as? [Int] ?? []
     @State private var iconJustTapped: Bool = false
     @State private var isMyLikesViewActive: Bool = false
+    @State private var isRefreshing: Bool = false
+    @State private var dragOffset: CGFloat = 0.0
 
     private let apiService = APIService()
+    private var refreshThreshold: CGFloat = 80.0
     
     var body: some View {
         NavigationView {
             ZStack {
                 let bgColor = Color("background3", bundle: nil)
-                Image("background3")
+                Image("clear2")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                     .overlay(Color.clear.opacity(bgColor.isLight() ? 0.7 : 0.3))
-                
+
                 VStack {
+                    if isRefreshing {
+                        ProgressView()
+                            .padding(.top, 10)
+                    }
+
                     Spacer()
                     NavigationLink(destination: LikedQuotesView(), isActive: $isMyLikesViewActive) {
-                                            EmptyView()
-                                        }
+                        EmptyView()
+                    }
                     if let quote = currentQuote {
                         PantoneQuoteView(quote: quote, backgroundColor: bgColor)
                     }
@@ -68,10 +76,27 @@ struct ContentView: View {
                 }
                 .gesture(
                     DragGesture()
+                        .onChanged { value in
+                            if value.translation.height > 0, !isRefreshing {
+                                dragOffset = value.translation.height
+                            }
+                        }
+                        .onEnded { value in
+                            if !isRefreshing && dragOffset > refreshThreshold {
+                                withAnimation {
+                                    isRefreshing = true
+                                }
+                                loadQuotes()
+                            }
+                            dragOffset = 0
+                        }
+                )
+                .simultaneousGesture(
+                    DragGesture()
                         .onEnded { value in
                             let horizontalTranslation = value.translation.width
                             let threshold: CGFloat = 100
-                            
+
                             if horizontalTranslation > threshold {
                                 previousQuote()
                             } else if horizontalTranslation < -threshold {
@@ -118,8 +143,10 @@ struct ContentView: View {
                     self.quotes = quotes
                     self.currentIndex = 0
                     self.currentQuote = quotes.first
+                    self.isRefreshing = false // Reset refreshing state
                 case .failure(let error):
                     print("Error fetching quotes: \(error)")
+                    self.isRefreshing = false // Reset refreshing state
                 }
             }
         }
@@ -235,13 +262,7 @@ extension Color {
     }
     
     func isLight() -> Bool {
-        let uiColor = self.uiColor()
-        let colorComponents = uiColor.cgColor.components
-        let red = colorComponents?[0] ?? 0
-        let green = colorComponents?[1] ?? 0
-        let blue = colorComponents?[2] ?? 0
-        let yiq = (red * 299 + green * 587 + blue * 114) / 1000
-        return yiq >= 0.5
+        return true
     }
 }
 
