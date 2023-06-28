@@ -5,33 +5,37 @@
 //  Created by Alejandro on 6/3/23.
 //
 import SwiftUI
+
 struct LikedQuotesView: View {
     @State private var likedQuotes: [Quote] = []
+    @Environment(\.presentationMode) var presentationMode
     private let apiService = APIService()
 
     var body: some View {
         ZStack {
-            // Replace ContentView with your desired background view
-            ContentView().blur(radius: 0.5)
-                .opacity(0.5) // Adjust the overall opacity of the background view
 
             VStack {
                 NavigationView {
                     List(likedQuotes, id: \.id) { quote in
-                        NavigationLink(destination: PantoneQuoteView(quote: quote, backgroundColor: .white)) {
-                            Text(quote.quoteText)
+                            NavigationLink(destination: PantoneQuoteWrapperView(quote: quote)) {
+                                Text(quote.quoteText)
+                            }
+                            .listRowBackground(Color.white)
                         }
-                        .listRowBackground(Color.white)
-                    }
                     .listStyle(PlainListStyle())
-                    .navigationTitle("My Likes")
+                    .navigationTitle("❤️")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Back") {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
+                    }
                 }
-                .background(Color.black) // Set the background color of the NavigationView to clear
-                .opacity(1.0) // Adjust the opacity of the NavigationView
             }
         }
-        .background(ContentView().ignoresSafeArea())
-        .opacity(0.5) // Set the overall opacity of the entire view except the specific elements
+        .background(Color.white.ignoresSafeArea())
+        .opacity(0.8)
         .onAppear {
             loadLikedQuotes()
         }
@@ -55,3 +59,15 @@ struct LikedQuotesView: View {
     }
 }
 
+struct PantoneQuoteWrapperView: View {
+    @State private var quote: Quote?
+    @State private var isNightMode: Bool = false
+    
+    init(quote: Quote) {
+        _quote = State(initialValue: quote)
+    }
+    
+    var body: some View {
+        PantoneQuoteView(quote: $quote, isNightMode: $isNightMode )
+    }
+}
