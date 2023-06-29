@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A9E3CC4A29F8F90700D01245"
-               BuildableName = "DudeWithAnApp.app"
-               BlueprintName = "DudeWithAnApp"
+               BuildableName = "Got Jesus?.app"
+               BlueprintName = "Got Jesus?"
                ReferencedContainer = "container:DudeWithAnApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,8 +44,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A9E3CC4A29F8F90700D01245"
-            BuildableName = "DudeWithAnApp.app"
-            BlueprintName = "DudeWithAnApp"
+            BuildableName = "Got Jesus?.app"
+            BlueprintName = "Got Jesus?"
             ReferencedContainer = "container:DudeWithAnApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A9E3CC4A29F8F90700D01245"
-            BuildableName = "DudeWithAnApp.app"
-            BlueprintName = "DudeWithAnApp"
+            BuildableName = "Got Jesus?.app"
+            BlueprintName = "Got Jesus?"
             ReferencedContainer = "container:DudeWithAnApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

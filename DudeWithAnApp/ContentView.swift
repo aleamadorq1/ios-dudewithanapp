@@ -31,7 +31,7 @@ struct ContentView: View {
                     
                     Spacer()
 
-                    if let currentQuote = currentQuote {
+                    if currentQuote != nil {
                         PantoneQuoteView(quote: $currentQuote, isNightMode: $isNightMode)
                     }
 
@@ -73,7 +73,7 @@ struct ContentView: View {
                         .background(Color.clear.opacity(0))
                         
                         .sheet(isPresented: $showPremiumInfoSheet) {
-                            PremiumInfoView(isPresented: $showPremiumInfoSheet)
+                            PremiumInfoView(isPresented: $showPremiumInfoSheet, apiService: apiService)
                         }
                         
                     }

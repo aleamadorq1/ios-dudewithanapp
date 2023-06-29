@@ -1,27 +1,26 @@
-//
-//  PremiumInfoView.swift
-//  DudeWithAnApp
-//
-//  Created by Alejandro on 6/28/23.
-//
-
 import Foundation
 import SwiftUI
 
 struct PremiumInfoView: View {
     @Binding var isPresented: Bool
+    @State var translations: AppTranslation?
+    var apiService: APIService
+
     var body: some View {
         NavigationView {
             VStack {
-
-                Text("Through our unique app, we spread the Word of God, bringing the word of God directly to your lock screen. This mission needs your support.")
-                    .font(.body)
+                Text(translations?.premiumViewTitle ?? "Loading...")
+                    .font(.custom("HelveticaNeue-Bold", size: 25))
+                    .padding()
+                
+                Text(translations?.premiumViewText1 ?? "Loading...")
+                    .font(.custom("HelveticaNeue-Light", size: 14))
                     .padding()
                 
                 Button(action: {
                     // add your action for premium here
                 }) {
-                    Text("Try for free!")
+                    Text(translations?.premiumViewButtonTextTry ?? "Loading...")
                         .foregroundColor(.white)
                         .padding()
                         .background(Color.black)
@@ -30,35 +29,52 @@ struct PremiumInfoView: View {
                 Button(action: {
                     // add your action for patreon here
                 }) {
-                    Text("Become a Patreon")
+                    Text(translations?.premiumViewButtonTextPatreon ?? "Loading...")
                         .foregroundColor(.white)
                         .padding()
                         .background(Color.gray)
                         .cornerRadius(10)
                 }
                 
-                Text("For a single payment of $3.99, not only do you unlock Night Mode and bespoke widgets, but you join us in fulfilling our Christian duty of spreading the Word. Your contribution counts! With a small commitment of $20 a year, join our community of believers and supporters. You're helping keep the wisdom of the Bible accessible, fulfilling your duty to share God's Word. By helping the project you help us covering the costs since this project is totally supported by its Patreons.")
+                Text(translations?.premiumViewText2 ?? "Loading...")
                     .padding()
-                    .font(.body)
+                    .font(.custom("HelveticaNeue-Light", size: 14))
+                Text(translations?.premiumViewText3 ?? "Loading...")
+                    .padding()
+                    .font(.custom("HelveticaNeue-Light", size: 14))
 
-                Spacer()
                 Button(action: {
-                    // add your action for patreon here
+                    // add your action for restore purchases here
                 }) {
-                    Text("Restore Purchases")
+                    Text(translations?.premiumViewButtonTextRestore ?? "Loading...")
                         .foregroundColor(.white)
                         .padding(5)
                         .background(Color.blue)
                         .cornerRadius(10)
                 }
             }
-            .navigationTitle("Join Our Mission:")
+            .font(.custom("HelveticaNeue-Light", size: 20))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         isPresented = false
                     }) {
                         Image(systemName: "arrow.backward")
+                    }
+                }
+            }
+        }
+        .onAppear {
+            if let languageIdentifier = Locale.preferredLanguages.first {
+                let languageCode = apiService.getLanguagePart(from: languageIdentifier)
+                apiService.fetchAppTranslations(language: languageCode) { result in
+                    switch result {
+                    case .success(let fetchedTranslations):
+                        DispatchQueue.main.async {
+                            translations = fetchedTranslations
+                        }
+                    case .failure(let error):
+                        print(error)
                     }
                 }
             }

@@ -16,6 +16,8 @@
 		A95D7F7E2A1C6E4200DE221E /* LatestQuoteWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A95D7F6F2A1C6E4000DE221E /* LatestQuoteWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A95DA7562A496A050021CA47 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = A95DA7552A496A050021CA47 /* AppIcon.appiconset */; };
 		A95DA7582A4C06C70021CA47 /* PremiumInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95DA7572A4C06C70021CA47 /* PremiumInfoView.swift */; };
+		A95DA75A2A4D3F890021CA47 /* AppTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95DA7592A4D3F890021CA47 /* AppTranslation.swift */; };
+		A9B0ED7C2A4D44830046B0FC /* AppTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95DA7592A4D3F890021CA47 /* AppTranslation.swift */; };
 		A9BA73B52A284F1D00182EED /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A9BA73B42A284F1D00182EED /* Alamofire */; };
 		A9BA73B72A28502F00182EED /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A9BA73B62A28502F00182EED /* Alamofire */; };
 		A9BA73B92A2B1A8900182EED /* LikedQuotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BA73B82A2B1A8900182EED /* LikedQuotesView.swift */; };
@@ -65,8 +67,9 @@
 		A95D7F7B2A1C6E4200DE221E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A95DA7552A496A050021CA47 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AppIcon.appiconset; path = DudeWithAnApp/AppIcon.appiconset; sourceTree = "<group>"; };
 		A95DA7572A4C06C70021CA47 /* PremiumInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumInfoView.swift; sourceTree = "<group>"; };
+		A95DA7592A4D3F890021CA47 /* AppTranslation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTranslation.swift; sourceTree = "<group>"; };
 		A9BA73B82A2B1A8900182EED /* LikedQuotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedQuotesView.swift; sourceTree = "<group>"; };
-		A9E3CC4B29F8F90700D01245 /* DudeWithAnApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DudeWithAnApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9E3CC4B29F8F90700D01245 /* Got Jesus?.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Got Jesus?.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E3CC4E29F8F90700D01245 /* DudeWithAnAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DudeWithAnAppApp.swift; sourceTree = "<group>"; };
 		A9E3CC5029F8F90700D01245 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A9E3CC5229F8F90900D01245 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -132,7 +135,7 @@
 		A9E3CC4C29F8F90700D01245 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A9E3CC4B29F8F90700D01245 /* DudeWithAnApp.app */,
+				A9E3CC4B29F8F90700D01245 /* Got Jesus?.app */,
 				A95D7F6F2A1C6E4000DE221E /* LatestQuoteWidgetExtension.appex */,
 			);
 			name = Products;
@@ -146,9 +149,10 @@
 				A9E3CC4E29F8F90700D01245 /* DudeWithAnAppApp.swift */,
 				A9E3CC5029F8F90700D01245 /* ContentView.swift */,
 				A9BA73B82A2B1A8900182EED /* LikedQuotesView.swift */,
+				A95DA7572A4C06C70021CA47 /* PremiumInfoView.swift */,
+				A95DA7592A4D3F890021CA47 /* AppTranslation.swift */,
 				A9E3CC5229F8F90900D01245 /* Assets.xcassets */,
 				A9E3CC5429F8F90900D01245 /* Preview Content */,
-				A95DA7572A4C06C70021CA47 /* PremiumInfoView.swift */,
 			);
 			path = DudeWithAnApp;
 			sourceTree = "<group>";
@@ -184,9 +188,9 @@
 			productReference = A95D7F6F2A1C6E4000DE221E /* LatestQuoteWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		A9E3CC4A29F8F90700D01245 /* DudeWithAnApp */ = {
+		A9E3CC4A29F8F90700D01245 /* Got Jesus? */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A9E3CC5929F8F90900D01245 /* Build configuration list for PBXNativeTarget "DudeWithAnApp" */;
+			buildConfigurationList = A9E3CC5929F8F90900D01245 /* Build configuration list for PBXNativeTarget "Got Jesus?" */;
 			buildPhases = (
 				A9E3CC4729F8F90700D01245 /* Sources */,
 				A9E3CC4829F8F90700D01245 /* Frameworks */,
@@ -198,12 +202,12 @@
 			dependencies = (
 				A95D7F7D2A1C6E4200DE221E /* PBXTargetDependency */,
 			);
-			name = DudeWithAnApp;
+			name = "Got Jesus?";
 			packageProductDependencies = (
 				A9BA73B42A284F1D00182EED /* Alamofire */,
 			);
 			productName = DudeWithAnApp;
-			productReference = A9E3CC4B29F8F90700D01245 /* DudeWithAnApp.app */;
+			productReference = A9E3CC4B29F8F90700D01245 /* Got Jesus?.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -240,7 +244,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A9E3CC4A29F8F90700D01245 /* DudeWithAnApp */,
+				A9E3CC4A29F8F90700D01245 /* Got Jesus? */,
 				A95D7F6E2A1C6E4000DE221E /* LatestQuoteWidgetExtension */,
 			);
 		};
@@ -276,6 +280,7 @@
 				A9F6367F2A1DB57C00F0D0FD /* APIService.swift in Sources */,
 				A95D7F782A1C6E4000DE221E /* LatestQuoteWidget.swift in Sources */,
 				A95D7F762A1C6E4000DE221E /* LatestQuoteWidgetLiveActivity.swift in Sources */,
+				A9B0ED7C2A4D44830046B0FC /* AppTranslation.swift in Sources */,
 				A9F636802A1DB58400F0D0FD /* Quote.swift in Sources */,
 				A95D7F742A1C6E4000DE221E /* LatestQuoteWidgetBundle.swift in Sources */,
 			);
@@ -291,6 +296,7 @@
 				A9E3CC5F29F8F98100D01245 /* APIService.swift in Sources */,
 				A95DA7582A4C06C70021CA47 /* PremiumInfoView.swift in Sources */,
 				A9E3CC4F29F8F90700D01245 /* DudeWithAnAppApp.swift in Sources */,
+				A95DA75A2A4D3F890021CA47 /* AppTranslation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +417,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "\"Got Jesus?\"";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -464,6 +471,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "\"Got Jesus?\"";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -483,6 +491,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -513,6 +522,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -552,7 +562,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A9E3CC5929F8F90900D01245 /* Build configuration list for PBXNativeTarget "DudeWithAnApp" */ = {
+		A9E3CC5929F8F90900D01245 /* Build configuration list for PBXNativeTarget "Got Jesus?" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A9E3CC5A29F8F90900D01245 /* Debug */,

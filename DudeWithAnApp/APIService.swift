@@ -5,6 +5,7 @@ public class APIService {
     let allQuotesURL = "https://dudewithanapp.site/api/quote/published"
     let latestQuoteURL = "https://dudewithanapp.site/api/quote/latest"
     let specificQuoteURL = "https://dudewithanapp.site/api/quote/"
+    let appTranslationURL = "https://dudewithanapp.site/api/apptranslation"
     
     let bearerToken: String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwidW5pcXVlX25hbWUiOiJpb3NhcHBAZHVkZXdpdGhhbmFwcC5zaXRlIiwibmJmIjoxNjg2NzA5OTM5LCJleHAiOjE4NDQ1NjI3MzksImlhdCI6MTY4NjcwOTkzOX0.47S4dpmb6ZIe1PiIxm63GWMoyMRWlEGe9sGEBJIQzVI"
 
@@ -65,12 +66,34 @@ public class APIService {
     }
 
     public func fetchQuote(id: Int, completion: @escaping (Result<Quote, Error>) -> Void) {
-        session.request(specificQuoteURL + "\(id)").responseData { response in
+        if let languageIdentifier = Locale.preferredLanguages.first {
+            let languageCode = getLanguagePart(from: languageIdentifier)
+            
+            session.request(specificQuoteURL + "\(id)"+"/translated?language=" + languageCode).responseData { response in
+                switch response.result {
+                case .success(let data):
+                    do {
+                        let quote = try JSONDecoder().decode(Quote.self, from: data)
+                        completion(.success(quote))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    func fetchAppTranslations(language: String, completion: @escaping (Result<AppTranslation, Error>) -> Void) {
+        let parameters: [String: Any] = ["language": language]
+
+        session.request(appTranslationURL, method: .get, parameters: parameters).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
-                    let quote = try JSONDecoder().decode(Quote.self, from: data)
-                    completion(.success(quote))
+                    let translations = try JSONDecoder().decode(AppTranslation.self, from: data)
+                    completion(.success(translations))
                 } catch {
                     completion(.failure(error))
                 }
