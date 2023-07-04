@@ -20,7 +20,6 @@ struct LikedQuotesView: View {
                             NavigationLink(destination: PantoneQuoteWrapperView(quote: quote)) {
                                 Text(quote.quoteText)
                             }
-                            .listRowBackground(Color.white)
                         }
                     .listStyle(PlainListStyle())
                     .navigationTitle("❤️")
@@ -34,7 +33,6 @@ struct LikedQuotesView: View {
                 }
             }
         }
-        .background(Color.white.ignoresSafeArea())
         .opacity(0.8)
         .onAppear {
             loadLikedQuotes()

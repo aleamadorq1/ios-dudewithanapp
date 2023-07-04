@@ -1,10 +1,18 @@
 import Foundation
 import SwiftUI
+import StoreKit
 
 struct PremiumInfoView: View {
     @Binding var isPresented: Bool
     @State var translations: AppTranslation?
     var apiService: APIService
+    @StateObject var storeManager = StoreManager()
+    var premiumProduct: SKProduct? {
+        storeManager.products.first(where: { $0.productIdentifier == "001" })
+    }
+    var patreonProduct: SKProduct? {
+        storeManager.products.first(where: { $0.productIdentifier == "003" })
+    }
 
     var body: some View {
         NavigationView {
@@ -18,8 +26,10 @@ struct PremiumInfoView: View {
                     .padding()
                 
                 Button(action: {
-                    // add your action for premium here
-                }) {
+                    if let product = premiumProduct {
+                        storeManager.buyProduct(product) //Premium button
+                    }
+                    }) {
                     Text(translations?.premiumViewButtonTextTry ?? "Loading...")
                         .foregroundColor(.white)
                         .padding()
@@ -27,7 +37,9 @@ struct PremiumInfoView: View {
                         .cornerRadius(10)
                 }
                 Button(action: {
-                    // add your action for patreon here
+                    if let product = patreonProduct {
+                        storeManager.buyProduct(product) //Patreon button
+                    }
                 }) {
                     Text(translations?.premiumViewButtonTextPatreon ?? "Loading...")
                         .foregroundColor(.white)
@@ -65,6 +77,8 @@ struct PremiumInfoView: View {
             }
         }
         .onAppear {
+            storeManager.getProducts(productIDs: ["001", "003"])
+            SKPaymentQueue.default().add(storeManager)
             if let languageIdentifier = Locale.preferredLanguages.first {
                 let languageCode = apiService.getLanguagePart(from: languageIdentifier)
                 apiService.fetchAppTranslations(language: languageCode) { result in
@@ -77,6 +91,42 @@ struct PremiumInfoView: View {
                         print(error)
                     }
                 }
+            }
+        }
+    }
+}
+
+class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+    
+    @Published var products: [SKProduct] = []
+    
+    func getProducts(productIDs: [String]) {
+        let request = SKProductsRequest(productIdentifiers: Set(productIDs))
+        request.delegate = self
+        request.start()
+    }
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        DispatchQueue.main.async {
+            self.products = response.products
+        }
+    }
+    
+    func buyProduct(_ product: SKProduct) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchased:
+                // Unlock the feature here or notify your view to update
+                SKPaymentQueue.default().finishTransaction(transaction)
+            case .failed, .deferred, .purchasing, .restored:
+                break
+            @unknown default:
+                break
             }
         }
     }

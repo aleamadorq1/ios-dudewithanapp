@@ -51,11 +51,9 @@ struct Provider: TimelineProvider {
 struct LatestQuoteWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
     var entry: SimpleEntry
-    let backgroundColor: Color = Color.white
     var icon: some View {
         Image(systemName: "quote.bubble") // Replace with your own image
-            .foregroundColor(.black)
-            .font(.system(size: 7))
+            .font(.system(size: 8))
     }
 
     var body: some View {
@@ -63,14 +61,10 @@ struct LatestQuoteWidgetEntryView : View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(entry.quote.quoteText)
                         .font(.custom("HelveticaNeue", size: dynamicFontSize(quote: entry.quote)))
-                        .foregroundColor(Color.black)
-                        .padding(2)
                 HStack(alignment: .top) {
                     icon
                     Text(entry.quote.secondaryText)
                         .font(.custom("HelveticaNeue", size: 7))
-                        .foregroundColor(Color.black)
-                        
                 }
             }
         } else {
@@ -94,16 +88,27 @@ struct LatestQuoteWidgetEntryView : View {
                 .border(Color.black, width: 2)
                 .position(x: geometry.size.width * 0.5, y: geometry.size.height * 0.5)
             }
+            .background(Color.white)
         }
     }
     
     func dynamicFontSize(quote: Quote) -> CGFloat {
         let length = quote.quoteText.count
-        if length < 50 {
+        if length < 25 {
+            return 14
+        } else if length < 55 {
+            return 13
+        } else if length < 75  {
             return 12
-        } else if length < 100 {
+        }else if length < 100{
+            return 11
+        } else if length < 150{
             return 10
-        } else {
+        } else if length < 220{
+            return 9
+        }
+        else
+        {
             return 8
         }
     }
