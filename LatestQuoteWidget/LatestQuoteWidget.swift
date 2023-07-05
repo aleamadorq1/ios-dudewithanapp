@@ -53,7 +53,7 @@ struct LatestQuoteWidgetEntryView : View {
     var entry: SimpleEntry
     var icon: some View {
         Image(systemName: "quote.bubble") // Replace with your own image
-            .font(.system(size: 8))
+            .font(.system(size: 7))
     }
 
     var body: some View {
@@ -95,11 +95,11 @@ struct LatestQuoteWidgetEntryView : View {
     func dynamicFontSize(quote: Quote) -> CGFloat {
         let length = quote.quoteText.count
         if length < 25 {
-            return 14
-        } else if length < 55 {
             return 13
-        } else if length < 75  {
+        } else if length < 55 {
             return 12
+        } else if length < 75  {
+            return 11
         }else if length < 100{
             return 11
         } else if length < 150{
@@ -144,22 +144,5 @@ struct LatestQuoteWidget_Previews: PreviewProvider {
     static var previews: some View {
         LatestQuoteWidgetEntryView(entry: SimpleEntry(date: Date(),  quote: Quote(id: 0, quoteText: "Error", secondaryText: "", url: "", creationDate: "", isActive: 0, isCSV: 0)))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
-    }
-}
-
-extension Color {
-    func uiColor() -> UIColor {
-        let components = self.cgColor?.components ?? [0, 0, 0, 0]
-        return UIColor(red: components[0], green: components[1], blue: components[2], alpha: components[3])
-    }
-    
-    func isLight() -> Bool {
-        let uiColor = self.uiColor()
-        let colorComponents = uiColor.cgColor.components
-        let red = colorComponents?[0] ?? 0
-        let green = colorComponents?[1] ?? 0
-        let blue = colorComponents?[2] ?? 0
-        let yiq = (red * 299 + green * 587 + blue * 114) / 1000
-        return yiq >= 0.5
     }
 }

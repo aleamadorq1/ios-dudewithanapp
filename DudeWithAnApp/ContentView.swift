@@ -14,8 +14,10 @@ struct ContentView: View {
     @State private var showLikedQuotesView: Bool = false
     @State private var hideIconsTimer: Timer? = nil
     @State private var backgroundImage: String = ""
-    @State private var isNightMode: Bool = true
+    @State private var isNightMode: Bool = UserDefaults.standard.bool(forKey: "isNightMode") ? true : false
+    @State private var userHasPaid: Bool = UserDefaults.standard.bool(forKey: "userHasPaid") ? false : true
     @State private var showPremiumInfoSheet: Bool = false
+    @StateObject var storeManager = StoreManager()
     
     private let apiService = APIService()
     private var refreshThreshold: CGFloat = 80.0
@@ -59,13 +61,22 @@ struct ContentView: View {
                             Image(systemName: "moon.fill")
                                 .foregroundColor(!isNightMode ? .black : .white)
                                 .onTapGesture {
-                                    withAnimation {
-                                        isNightMode.toggle()
-                                        backgroundImage = isNightMode  ? "dark" + String(Int.random(in:1...3)) : "clear" + String(Int.random(in:1...3))
-                                        showPremiumInfoSheet = true
-                                        hideIconsTimer?.invalidate()  // Invalidate the timer
+                                        if storeManager.userHasPaid {
+                                            // User has already paid, so just toggle the dark mode
+                                            withAnimation {
+                                                isNightMode.toggle()
+                                                UserDefaults.standard.set(isNightMode, forKey: "isNightMode")
+                                                backgroundImage = isNightMode  ? "dark" + String(Int.random(in:1...3)) : "clear" + String(Int.random(in:1...3))
+                                                hideIconsTimer?.invalidate()  // Invalidate the timer
+                                            }
+                                        } else {
+                                            // User has not paid, so show the PremiumInfoView
+                                            withAnimation {
+                                                showPremiumInfoSheet = true
+                                                hideIconsTimer?.invalidate()  // Invalidate the timer
+                                            }
+                                        }
                                     }
-                                }
                             Spacer()
                         }
                         .padding(.bottom, 20)
@@ -73,7 +84,7 @@ struct ContentView: View {
                         .background(Color.clear.opacity(0))
                         
                         .sheet(isPresented: $showPremiumInfoSheet) {
-                            PremiumInfoView(isPresented: $showPremiumInfoSheet, apiService: apiService)
+                            PremiumInfoView(isPresented: $showPremiumInfoSheet, apiService: apiService, storeManager: storeManager)
                         }
                         
                     }
@@ -234,14 +245,22 @@ struct PantoneQuoteView: View {
             .background(!isNightMode ? .white.opacity(0.5) : .black.opacity(0.2))
             .border(!isNightMode ? .black : .white, width: 6)
             
-            HStack {
+            HStack (spacing: 0) {
                 Spacer() // Push the text to the right end of the VStack
-                Text("Got Jesus?")
-                    .font(.custom("HelveticaNeue-Bold", size: 30))
-                    .padding(.top, 20)
-                    .padding(.bottom, 20)
+                Image("Ico") // Add this line
+                        .resizable() // Resizable to scale the image
+                        .aspectRatio(contentMode: .fit) // Keeps the aspect ratio intact
+                        .frame(width: 50, height: 50) // Set a frame for the icon
+                        .padding(.trailing, 10)
+                        .padding(.leading, 0)
+                        .cornerRadius(10)
+                Text("  Got Jesus?")
+                    .font(.custom("HelveticaNeue-Bold", size: 26))
+                    .padding(.top, 9)
+                    .padding(.bottom, 9)
+                    .padding(.leading, 0)
                     .padding(.trailing, 50)
-                    .padding(.leading, 10)
+                    //.padding(.leading, 10)
                     .cornerRadius(10)
                     .foregroundColor(!isNightMode ? .black : .white)
                     .background(!isNightMode ? .white.opacity(0.5) : .black.opacity(0.2))

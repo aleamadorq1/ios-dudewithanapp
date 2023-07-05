@@ -6,7 +6,7 @@ struct PremiumInfoView: View {
     @Binding var isPresented: Bool
     @State var translations: AppTranslation?
     var apiService: APIService
-    @StateObject var storeManager = StoreManager()
+    @ObservedObject var storeManager = StoreManager()
     var premiumProduct: SKProduct? {
         storeManager.products.first(where: { $0.productIdentifier == "001" })
     }
@@ -55,15 +55,15 @@ struct PremiumInfoView: View {
                     .padding()
                     .font(.custom("HelveticaNeue-Light", size: 14))
 
-                Button(action: {
+                //Button(action: {
                     // add your action for restore purchases here
-                }) {
-                    Text(translations?.premiumViewButtonTextRestore ?? "Loading...")
-                        .foregroundColor(.white)
-                        .padding(5)
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                }
+                //}) {
+                //    Text(translations?.premiumViewButtonTextRestore ?? "Loading...")
+                //        .foregroundColor(.white)
+                 //       .padding(5)
+                 //       .background(Color.blue)
+                //        .cornerRadius(10)
+               // }
             }
             .font(.custom("HelveticaNeue-Light", size: 20))
             .toolbar {
@@ -99,6 +99,20 @@ struct PremiumInfoView: View {
 class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
     @Published var products: [SKProduct] = []
+    @Published var userHasPaid: Bool = UserDefaults.standard.bool(forKey: "userHasPaid") ? false : true
+    
+    override init() {
+        super.init()
+        
+        // Explicitly check if the key exists
+        if UserDefaults.standard.object(forKey: "userHasPaid") != nil {
+            userHasPaid = UserDefaults.standard.bool(forKey: "userHasPaid")
+        }
+        else
+        {
+            userHasPaid = false
+        }
+    }
     
     func getProducts(productIDs: [String]) {
         let request = SKProductsRequest(productIdentifiers: Set(productIDs))
@@ -121,7 +135,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased:
-                // Unlock the feature here or notify your view to update
+                userHasPaid = true
+                UserDefaults.standard.set(userHasPaid, forKey: "userHasPaid")
                 SKPaymentQueue.default().finishTransaction(transaction)
             case .failed, .deferred, .purchasing, .restored:
                 break
